@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'id', 1 => 'title', 2 => 'url', 3 => 'postion', 4 => 'listorder', 5 => 'module', '_autoinc' => true, '_pk' => 'id', '_type' => array ( 'id' => 'int(10)', 'title' => 'varchar(30)', 'url' => 'varchar(200)', 'postion' => 'varchar(10)', 'listorder' => 'int(11)', 'module' => 'varchar(20)', ), );?>

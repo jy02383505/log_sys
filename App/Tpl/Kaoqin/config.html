@@ -1,0 +1,220 @@
+<include file="Public:header" />
+
+<style>
+	.error{border:#FF0000 solid 1px;}
+	.backToTop{display:none;}
+</style>
+
+
+<div class="container">
+	<!-- Docs nav ================================================== -->
+	<div class="page-header">
+		<h4>考勤设置</h4>
+	</div>
+	<include file="Public:alert" />
+	<p class="view">
+    <!--
+    <b>{:L('VIEW_NAV')}</b>
+	<img src=" __PUBLIC__/img/by_owner.png"/>  <a href="{:U('event/index')}" <if condition="$Think.get.by eq null">class="active"</if>>{:L('ALL')}</a> |
+	<a href="{:U('event/index','by=me')}" <if condition="$Think.get.by eq 'me'">class="active"</if>>{:L('MY_RESPONSIBLE')}</a> |
+	<a href="{:U('event/index','by=sub')}" <if condition="$Think.get.by eq 'sub'">class="active"</if>>{:L('SUBORDINATE_RESPONSIBLE')}</a> | 
+	<a href="{:U('event/index','by=create')}" <if condition="$Think.get.by eq 'create'">class="active"</if>>{:L('MY_CREATE')}</a> &nbsp; &nbsp; &nbsp; &nbsp;
+	<img src="__PUBLIC__/img/by_time.png"/> 
+	<a href="{:U('event/index','by=today')}" <if condition="$Think.get.by eq 'today'">class="active"</if>>{:L('TODAY_SCHEDULE')}</a> | 
+	<a href="{:U('event/index','by=week')}" <if condition="$Think.get.by eq 'week'">class="active"</if>>{:L('WEEK_SCHEDULE')}</a> | 
+	<a href="{:U('event/index','by=month')}" <if condition="$Think.get.by eq 'month'">class="active"</if>>{:L('MONTH_SCHEDULE')}</a> &nbsp; &nbsp; 
+	<a href="{:U('event/index','by=add')}" <if condition="$Think.get.by eq 'add'">class="active"</if>>{:L('RECENTLY_CREATED')}</a> | 
+	<a href="{:U('event/index','by=update')}" <if condition="$Think.get.by eq 'update'">class="active"</if>>{:L('RECENT_UPDATES')}</a>
+    -->
+	</p>
+	<div class="row">
+		<div class="span12" style="padding-bottom:10px;border-bottom:#CCC 1px solid;">
+			<p>此处列出的是系统中被激活的用户(jl_user.status>0)，切记<b>设置正确后再执行导入</b>考勤机数据的操作，否则错误的记录无法处理。</p>
+			<p >考勤时间设置：jl_kaoqin_config表中</p>
+		</div>
+		<div class="span12">
+			<form id="form1" name="form1" method="post" action="">
+                <table class=" table-condensed" width="100%">
+                <tr>       
+                <td width="100">user_id</td>             
+                <td width="160">用户名</td>
+                <td width="100">指纹考勤机id</td>
+                <td></td>
+                </tr>
+                
+                <volist name="users_list" id="vo">
+                <tr>                    
+                <td>{$vo.user_id}</td>
+                <td>{$vo.name}</td>
+                <td><input type="text" style="width:60px;" id="kqj_user_id_{$vo.user_id}" name="" value="{$vo.kqj_user_id}"> </td>
+                <td><button type="button" class="btn btn-info btn-sm btn_save" user_id="{$vo.user_id}">保存更改</button></td>
+                </tr>
+                </volist>
+                
+                <tr>
+                <td colspan='10' style="border-bottom:#CCC solid 1px;"><h4>考勤时间设置</h4></td>
+                </tr>
+                <tr>
+                <td colspan='10' style="color:#FF0000;"><h4>格式：07:00，08:30，15:30，18:00，一旦设置错误，后续的错误将无法撤销</h4></td>
+                </tr>                
+                
+                <volist name="time_list" id="vo">
+                <tr>                    
+                <td>{$vo.week_cn}</td>
+                <td><input type="text" style="width:60px;" id="start_{$vo.id}" name="{$vo.week_cn}" value="{$vo.starttime}"></td>
+                <td><input type="text" style="width:60px;" id="end_{$vo.id}" name="{$vo.week_cn}" value="{$vo.endtime}"> </td>
+                <td><button type="button" class="btn btn-info btn-sm btn_time_save" id_val="{$vo.id}">保存更改</button></td>
+                </tr>
+                </volist>
+                
+                </table>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/WdatePicker.js"></script>
+
+
+<script type="text/javascript">
+$(function($) {
+	
+	// 判断英文字符
+	jQuery.validator.addMethod("isEnglish", function(value, element) {       
+         return this.optional(element) || /^[A-Za-z]+$/.test(value);       
+    }, "只能包含英文字符。");
+	
+	
+	$('#form1').validate({
+		errorElement : 'span',
+		errorClass : 'error',
+		focusInvalid : true,  
+        rules : {  
+			kqj_user_id:{
+				required: true,//名称带方括号验证不
+				number:true,
+			},
+			kqj_date_varchar:{
+				required: true,//
+			},
+        },  
+        messages : {
+			kqj_user_id :{
+				required :"用户必须选择",	
+			},
+			kqj_date_varchar :{
+				required :"时间必填",	
+			},
+        },  
+		
+
+        highlight : function(element) {  
+            $(element).closest('.form-group').addClass('has-error');  
+        },  
+
+        success : function(label) {  
+            label.closest('.form-group').removeClass('has-error');  
+            label.remove();  
+        },  
+
+        errorPlacement : function(error, element) {  
+            element.parent('div').append(error);  
+        },  
+		submitHandler: function(form) {
+			form.submit();
+		}
+	});
+});
+</script>
+
+<include file="Public:footer" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.0.min.js"></script>
+<script>
+$(document).ready(function() {
+	//mac应用按钮 zjh add
+	$('.btn_save').click(function(){
+		//var z_tid = $("#tid").val();
+		var user_id = $(this).attr("user_id");
+		var kqj_user_id_str = "#kqj_user_id_" + user_id;
+		var kqj_user_id = $(kqj_user_id_str).val();
+	//	alert(user_id);
+		var url_do = "{:U('Kaoqinconfig/ajax_save_uid_kqj')}";
+		var this_btn = $(this);
+		
+	
+		//ajax提交
+		$.ajax({
+			url:url_do,
+			type:'post',
+			data:"user_id="+user_id+"&kqj_user_id="+kqj_user_id,
+			async:true,//false为同步
+			dataType:'json',
+			success:function(re) {
+				if (re.stat * 1 > 0){
+					//alert("更新成功");
+					$(this_btn).html(re.data+'...');
+				}else{
+					//alert(re.data);//失败提示	
+					$(this_btn).html(re.data);
+				}
+
+			},
+			error:function() {
+				alert('由于网络异常导致操作失败，请刷新页面重试....');
+			}
+		});
+				
+	});	
+
+	$('.btn_time_save').click(function(){
+		//var z_tid = $("#tid").val();
+		var id_val = $(this).attr("id_val");
+		var start_id_str = "#start_" + id_val;
+		var start_val = $(start_id_str).val();
+		
+		var end_id_str =  "#end_" + id_val;
+		var end_val = $(end_id_str).val();
+		
+		
+		var url_do = "{:U('Kaoqinconfig/ajax_save_kq_time')}";
+		var this_btn = $(this);
+		
+		//alert(start_val);
+	
+		//ajax提交
+		$.ajax({
+			url:url_do,
+			type:'post',
+			data:"id="+id_val+"&starttime="+start_val+"&endtime="+end_val,
+			async:true,//false为同步
+			dataType:'json',
+			success:function(re) {
+				if (re.stat * 1 > 0){
+					//alert("更新成功");
+					$(this_btn).html(re.data+'...');
+				}else{
+					//alert(re.data);//失败提示	
+					$(this_btn).html(re.data);
+				}
+
+			},
+			error:function() {
+				alert('由于网络异常导致操作失败，请刷新页面重试....');
+			}
+		});
+				
+	});	
+});
+
+</script>
+
+
+
+
+
+
+
+
+

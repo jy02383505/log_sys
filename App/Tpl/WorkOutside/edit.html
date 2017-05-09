@@ -1,0 +1,70 @@
+<include file="Public:header" />
+
+<div class="container">
+	<div class="page-header">
+		<h4><if condition="ACTION_NAME eq 'add'">添加<else/>修改</if>外出记录</h4>
+	</div>
+
+	<form method="post" action=<if condition="ACTION_NAME eq 'add'">"{:U('WorkOutside/add')}"<else/>"{:U('WorkOutside/edit')}"</if>>
+		<table class="table table-hover table-striped "> 
+            <tr>
+                <td width="120px">用户：</td>
+                <td>
+                    <if condition="ACTION_NAME eq 'add'">
+                        <select name="user_id">
+                            <if condition="$Think.session.admin eq '1'">
+                                <option>---请选择---</option>
+                                <volist name="users" id="user">
+                                	<option value="{$user[user_id]}">{$user[user_id]}-{$user[name]}</option>
+                                </volist>
+                            <else/>
+                                <option value="{$Think.session.role_id}">{$Think.session.role_id}-{$Think.session.name}</option>
+                            </if>
+                        </select>
+                    <else/>
+                        <input type="text" value="{$row[username]}" disabled>
+                        <input type="hidden" name="user_id" value="{$row[user_id]}">
+                    </if>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>外出日期：</td>
+                <td>
+    				<input type="text" name="out_date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate" value="{$row[out_date]}">
+                    <code>超过一天的请以天为单位分多次填写</code>
+    			</td>
+            </tr>
+            
+            <tr>
+                <td>未打卡时间：</td>
+                <td>   
+                    <select name="off_time" style="width:100px;">
+                        <option value="0" <if condition="$row[off_time] eq '0'">selected</if> >上午</option>
+                        <option value="1" <if condition="$row[off_time] eq '1'">selected</if> >下午</option>
+                        <option value="2" <if condition="$row[off_time] eq '2'">selected</if> >全天</option>
+                    </select>
+    			</td>
+            </tr>
+
+            <tr>
+                <td>外出事项：</td>
+                <td>
+                    <textarea name="events" class="form-control" rows="3" style="width:400px;">{$row[events]}</textarea>
+                </td>
+            </tr>               
+            
+            <tr>
+                <td> 
+                    <input type="hidden" name="id" value='{$row[id]}'>  
+                    <button type="submit" class="btn btn-primary btn-sm">保存</button>
+                    <a href="{:U('WorkOutside/index')}"><button type="button" class="btn btn-danger btn-sm">取消</button></a> 
+                </td>
+            </tr>  
+		</table>
+	</form>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/js/WdatePicker.js"></script>
+
+<include file="Public:footer" />

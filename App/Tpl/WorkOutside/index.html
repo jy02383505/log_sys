@@ -1,0 +1,108 @@
+<include file="Public:header" />
+<link rel="stylesheet" href="__PUBLIC__/jui_datetimepicker/css/jquery-ui.css">
+<script src="__PUBLIC__/jui_datetimepicker/js/jquery-ui.js"></script>
+<script src="__PUBLIC__/jui_datetimepicker/js/jquery-ui-timepicker-addon.js"></script>
+<style>
+    .ui-datepicker-calendar{
+        display: none;
+    }
+    .ui-datepicker-year{
+        width: 70px;
+    }
+</style>
+
+<div class="container">
+    <div class="page-header">
+        <h3>外出登记记录</h3>
+        <form action="{:U('WorkOutside/index')}">
+            <select name="q_user">
+                <option value="">---请选择用户---</option>
+                <volist name="users" id="user">
+                    <option value="{$user[user_id]}">{$user[name]}</option>
+                </volist>
+            </select>
+            <input type="text" name="q_month" class="q_month" placeholder="选择日期">
+            <input type="hidden" name="m" value="{$Think.MODULE_NAME}">
+            <input type="hidden" name="a" value="{$Think.ACTION_NAME}">
+            <button class="btn btn-sm btn-primary">查询</button>
+            <button type="button" class="btn btn-sm btn-info clear_q_month">清空日期</button>
+        </form>
+
+        <a href="{:U('WorkOutside/add')}"><button type="button" class="btn btn-sm btn-success pull-right add_out">新增外出记录</button></a>
+    </div>
+    <table class="table table-hover table-striped table-bordered" style="margin-top:15px;">
+        <tr>
+            <th>id</th>
+            <th>登记日期</th>
+            <th>未打卡事项</th>
+            <th>未打卡时间</th>
+            <th>相关人员</th>
+            <th>修改时间</th>
+            <th>操作</th>
+        </tr>
+        <volist name="rows" id="row">
+            <tr>
+                <td>{$row[id]}</td>
+                <td>{$row[out_date]}</td>
+                <td>{$row[events]}</td>
+                <td>
+                    <if condition="$row[off_time] eq '0'">上午<elseif condition="$row[off_time] eq '1'"/>下午<else/>全天</if>
+                </td>
+                <td>{$row[username]}</td>
+                <td>{$row[update_time]|date="Y-m-d H:i:s", ###}</td>
+                <td>
+                    <a href={:U('WorkOutside/edit', "id=$row[id]")} class="btn btn-sm btn-warning">修改</a>
+                    <button type="button" data-href={:U('WorkOutside/delete', "id=$row[id]")} class="btn btn-sm btn-danger del_it">删除</button>
+                </td>
+            </tr>
+        </volist>
+    </table>
+    <div class="page-box">
+        {$show}
+    </div>
+</div>
+
+<script type="text/javascript">
+    // var module = '{$Think.ACTION_NAME}';
+    // alert(module);
+    $('.del_it').click(function(){
+        var self = $(this);
+        if(confirm('确定删除外出记录吗')){
+            location.href = self.attr('data-href');
+        }
+    })
+
+    // datepicker initialization
+    $('.q_month').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm',
+        onClose: function(dateText, inst){
+            var month = $('#ui-datepicker-div .ui-datepicker-month option:selected').val();
+            var year = $('#ui-datepicker-div .ui-datepicker-year option:selected').val();
+            var month_str = (month * 1 + 1) < 10 ? '0' + (month * 1 + 1) : '' + (month * 1 + 1);
+            $('.q_month').val(year + '-' + month_str);
+        }
+    });
+
+    // 搜索之后的页面处理
+    var q_user = '{$Think.get.q_user}';
+    var q_month = '{$Think.get.q_month}';
+    if(!!q_user){
+        $.each($('select[name=q_user] option'), function(i, o){
+            if(o.value == q_user){
+                o.selected = true;
+            }else{
+                o.selected = false;
+            }
+        })
+    }
+    if(!!q_month){
+        $('.q_month').val(q_month);
+    }
+
+    // clear_q_month
+    $('.clear_q_month').click(function(){
+        $('.q_month').val('');
+    })
+</script>

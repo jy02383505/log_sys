@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'permission_id', 1 => 'role_id', 2 => 'position_id', 3 => 'url', 4 => 'description', '_autoinc' => true, '_pk' => 'permission_id', '_type' => array ( 'permission_id' => 'int(10)', 'role_id' => 'int(10)', 'position_id' => 'int(10)', 'url' => 'varchar(50)', 'description' => 'varchar(200)', ), );?>

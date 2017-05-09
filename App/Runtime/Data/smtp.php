@@ -1,0 +1,1 @@
+<?php	return array ( 'MAIL_ADDRESS' => 'jlinc@qq.com', 'MAIL_SMTP' => 'smtp.qq.com', 'MAIL_PORT' => '25', 'MAIL_LOGINNAME' => 'jlinc@qq.com', 'MAIL_PASSWORD' => '123456', 'MAIL_SECURE' => NULL, 'MAIL_CHARSET' => 'UTF-8', 'MAIL_AUTH' => true, 'MAIL_HTML' => true, 'name' => 'smtp', );?>

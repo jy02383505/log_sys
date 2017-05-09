@@ -1,0 +1,220 @@
+<include file="Public:header" />
+
+<style>
+	.error{border:#FF0000 solid 1px;}
+</style>
+
+
+<div class="container">
+	<!-- Docs nav ================================================== -->
+	<div class="page-header">
+		<h4>添加出差记录</h4>
+	</div>
+	<include file="Public:alert" />
+	<p class="view">
+    <!--
+    <b>{:L('VIEW_NAV')}</b>
+	<img src=" __PUBLIC__/img/by_owner.png"/>  <a href="{:U('event/index')}" <if condition="$Think.get.by eq null">class="active"</if>>{:L('ALL')}</a> |
+	<a href="{:U('event/index','by=me')}" <if condition="$Think.get.by eq 'me'">class="active"</if>>{:L('MY_RESPONSIBLE')}</a> |
+	<a href="{:U('event/index','by=sub')}" <if condition="$Think.get.by eq 'sub'">class="active"</if>>{:L('SUBORDINATE_RESPONSIBLE')}</a> | 
+	<a href="{:U('event/index','by=create')}" <if condition="$Think.get.by eq 'create'">class="active"</if>>{:L('MY_CREATE')}</a> &nbsp; &nbsp; &nbsp; &nbsp;
+	<img src="__PUBLIC__/img/by_time.png"/> 
+	<a href="{:U('event/index','by=today')}" <if condition="$Think.get.by eq 'today'">class="active"</if>>{:L('TODAY_SCHEDULE')}</a> | 
+	<a href="{:U('event/index','by=week')}" <if condition="$Think.get.by eq 'week'">class="active"</if>>{:L('WEEK_SCHEDULE')}</a> | 
+	<a href="{:U('event/index','by=month')}" <if condition="$Think.get.by eq 'month'">class="active"</if>>{:L('MONTH_SCHEDULE')}</a> &nbsp; &nbsp; 
+	<a href="{:U('event/index','by=add')}" <if condition="$Think.get.by eq 'add'">class="active"</if>>{:L('RECENTLY_CREATED')}</a> | 
+	<a href="{:U('event/index','by=update')}" <if condition="$Think.get.by eq 'update'">class="active"</if>>{:L('RECENT_UPDATES')}</a>
+    -->
+	</p>
+	<div class="row">
+		<div class="span12">
+			
+
+		</div>
+		<div class="span12">
+			<form id="form1" name="form1" method="post" action="" class="form-inline">
+				<table class="table table-hover table-striped table_thead_fixed"> 
+                <tr>
+                <td width='80'>用户：</td>
+                <td>
+                    <select  style="width:auto" name="user_id" id="user_id">
+                    <option value="">职员</option>
+                    <volist name="users_list" id="vo">
+                    <if condition="ACTION_NAME == 'edit'">
+                    	<option value="{$vo.user_id}" <eq name="datas.user_id" value="$vo.user_id">selected</eq>  >{$vo.user_id}-{$vo.name}</option>
+                    <else />
+                    	<option value="{$vo.user_id}" <eq name="user_id" value="$vo.user_id">selected</eq>  >{$vo.user_id}-{$vo.name}</option>
+                    </if>
+                    </volist>
+                    </select>
+                    <span></span>
+                </td>
+                <td></td>
+                </tr>
+                
+                 <tr>
+                <td>出差时长：</td>
+                <td>   
+					<input type="text" name="chuchai_days" id="chuchai_days" value= "{$datas.chuchai_days}" style="width:40px;"> 天
+                    
+                    &nbsp;&nbsp;
+                    <select name="days_sel" id="days_sel" style="width:100px;">
+					<option value="">快捷输入</option>
+                    <?php
+                    for ($i=0.5;$i<7;$i+=0.5){
+                    ?>
+                       <option value="<?php echo $i;?>"><?php echo $i;?>天</option>
+                    <?php
+                    } 
+                    ?>         
+                    </select>
+				</td>
+                </tr>
+                
+                <tr>
+                <td>开始时间：</td>
+                <td>
+				<input type="text" id="starttime" name="starttime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate" value="{$datas.starttime}" style="width:140px"/>&nbsp;
+                结束时间：<input type="text" id="endtime" name="endtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate" value="{$datas.endtime}" style="width:140px"/>&nbsp;
+                跨月的请分开两条填写，以开始时间的年月作为统计时间
+                </td>
+                <td>
+                </td>
+                </tr>
+                
+                <tr>
+                <td>地区：</td>
+                <td>
+                	<input type="radio" name="type" value="3" <eq name="datas.type" value="3">checked</eq> >一线城市&nbsp;&nbsp;
+                	<input type="radio" name="type" value="2" <eq name="datas.type" value="2">checked</eq> >省外&nbsp;&nbsp;
+                    <input type="radio" name="type" value="1" <eq name="ACTION_NAME" value="add">checked<else/>  <eq name="datas.type" value="1">checked</eq>   </eq> >省内
+                </td>
+                </tr>   
+                
+                 <tr>
+                <td>备注：</td>
+                <td><textarea name="content" class="form-control" rows="3" style="width:400px;">{$datas.content}</textarea>
+
+                </td>
+                <td>
+                </td>
+                </tr>               
+   
+                
+                <tr>
+                <td></td>
+                <td>
+                    <input type="hidden" name="id" value='{$datas.id}'>  
+                    <button type="submit" class="btn btn-info btn-sm">保存更改</button>   &nbsp;&nbsp;
+                    <a href="{:U('Chuchai/index')}"><button type="button" class="btn btn-info btn-sm">取消</button></a> 
+                </td>
+                <td>
+
+                </td>
+                </tr>  
+                
+                <tr>
+                <td></td>
+                <td>
+				注意：以输入的天数作为统计时长，允许的值为0.5、1、1.5之类<br>
+                跨月的，请分开填写，否则后面的都被统计到开始时间所在的月份<br>
+                当天出差，当天回来，开始和截止时间请写为相同即可，不可为空，否则无法统计<br>
+                开始日期：出差第一天的日期，结束日期为出差最后一天的日期<br>
+                </td>
+                <td>
+                </td>
+                </tr>
+                
+				</table>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/WdatePicker.js"></script>
+
+
+<script type="text/javascript">
+$(function($) {
+	
+	// 判断英文字符
+	jQuery.validator.addMethod("isEnglish", function(value, element) {       
+         return this.optional(element) || /^[A-Za-z]+$/.test(value);       
+    }, "只能包含英文字符。");
+	
+	
+	$('#form1').validate({
+		errorElement : 'span',
+		errorClass : 'error',
+		focusInvalid : true,  
+        rules : {  
+			user_id:{
+				required: true,//名称带方括号验证不
+				number:true,
+			},
+			chuchai_days:{
+				required: true,//
+				number:true,
+			},
+			starttime:{
+				required: true,//
+			},
+			endtime:{
+				required: true,//
+			},
+			content:{
+				required: true,//
+			},
+        },  
+        messages : {
+			user_id :{
+				required :"用户必须选择",	
+			},
+			chuchai_days:{
+				required :"出差时长必填",	
+				number:"只能是小数或整数",
+			},
+			starttime :{
+				required :"开始时间必填",	
+			},
+			endtime :{
+				required :"结束时间必填",	
+			},			
+			content :{
+				required :"备注必填",	
+			},			
+        },  
+		
+
+        highlight : function(element) {  
+            $(element).closest('.form-group').addClass('has-error');  
+        },  
+
+        success : function(label) {  
+            label.closest('.form-group').removeClass('has-error');  
+            label.remove();  
+        },  
+
+        errorPlacement : function(error, element) {  
+            element.parent('div').append(error);  
+        },  
+		submitHandler: function(form) {
+			form.submit();
+		}
+	});
+});
+</script>
+
+<script language="javascript" type="text/javascript"> 
+$(document).ready(function(){ 
+	$('#days_sel').change(function(){ 
+		//alert($(this).children('option:selected').val()); 
+		$("#chuchai_days").val($(this).children('option:selected').val());
+	
+	}) 
+}) 
+</script> 
+
+<include file="Public:footer" />

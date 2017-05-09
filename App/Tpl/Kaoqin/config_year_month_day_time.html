@@ -1,0 +1,195 @@
+<include file="Public:header" />
+<div class="container">
+	<!-- Docs nav ================================================== -->
+	<div class="page-header">
+		<h4>设置-每日考勤设置</h4>
+	</div>
+	
+	<p class="view">
+    <!--
+    <b>{:L('VIEW_NAV')}</b>
+	<img src=" __PUBLIC__/img/by_owner.png"/>  <a href="{:U('event/index')}" <if condition="$Think.get.by eq null">class="active"</if>>{:L('ALL')}</a> |
+	<a href="{:U('event/index','by=me')}" <if condition="$Think.get.by eq 'me'">class="active"</if>>{:L('MY_RESPONSIBLE')}</a> |
+	<a href="{:U('event/index','by=sub')}" <if condition="$Think.get.by eq 'sub'">class="active"</if>>{:L('SUBORDINATE_RESPONSIBLE')}</a> | 
+	<a href="{:U('event/index','by=create')}" <if condition="$Think.get.by eq 'create'">class="active"</if>>{:L('MY_CREATE')}</a> &nbsp; &nbsp; &nbsp; &nbsp;
+	<img src="__PUBLIC__/img/by_time.png"/> 
+	<a href="{:U('event/index','by=today')}" <if condition="$Think.get.by eq 'today'">class="active"</if>>{:L('TODAY_SCHEDULE')}</a> | 
+	<a href="{:U('event/index','by=week')}" <if condition="$Think.get.by eq 'week'">class="active"</if>>{:L('WEEK_SCHEDULE')}</a> | 
+	<a href="{:U('event/index','by=month')}" <if condition="$Think.get.by eq 'month'">class="active"</if>>{:L('MONTH_SCHEDULE')}</a> &nbsp; &nbsp; 
+	<a href="{:U('event/index','by=add')}" <if condition="$Think.get.by eq 'add'">class="active"</if>>{:L('RECENTLY_CREATED')}</a> | 
+	<a href="{:U('event/index','by=update')}" <if condition="$Think.get.by eq 'update'">class="active"</if>>{:L('RECENT_UPDATES')}</a>
+    -->
+	</p>
+ <style>                  
+ 	.tb_left{}
+ 	.tb_left li{list-style-type:none;height:30px;line-height:30px;border-bottom:#CCC 1px solid;}
+	.tb_left li.noborder{clear:both;height:30px;line-height:30px;border:none;}
+	
+ 	.tb_month{float:left;width:60px;height:90px;margin:0px;padding:0px;}
+	.tb_month li{float:left;list-style-type:none;overflow:hidden;}
+ 	.tb_month dt{clear:both;height:30px;line-height:30px;border-bottom:#CCC 1px solid;}	
+	.tb_month dt.noborder{clear:both;height:30px;line-height:30px;border:none;}
+	
+ 	.tb_year{float:left;width:60px;margin:0px;padding:0px;}
+	.tb_year li{clear:both;list-style-type:none;height:30px;line-height:30px;border-bottom:#CCC 1px solid;overflow:hidden;}
+	.tb_year li.noborder{clear:both;height:30px;line-height:30px;border:none;}
+
+	.backToTop{display:none;}
+ </style>
+	<div class="row">
+		<div class="span12">
+			<ul class="nav pull-left">
+				<li class="pull-left hide"><a id="delete"  class="btn" style="margin-right: 5px;"><i class="icon-remove"></i>{:L('DELETE')}</a></li>
+				<li class="pull-left">
+					<form class="form-inline" id="searchForm"  action="" method="get">
+                    <input type="hidden" name="m" value="kaoqinconfig"/><!--模型：请假-->
+                    <input type="hidden" name="a" value="config_year_month_day_time"/><!--模型：列表-->
+					<ul class="nav pull-left">
+                        <li class="pull-left" style="margin-right:10px;">
+                            <select  style="width:auto" name="the_year" id="the_year">
+                              <option value="">年份</option>
+                              <option value="2014" <eq name="the_year" value="2014">selected</eq> >2014</option>
+                              <option value="2015" <eq name="the_year" value="2015">selected</eq> >2015</option>
+                              <option value="2016" <eq name="the_year" value="2016">selected</eq> >2016</option>
+                              <option value="2017" <eq name="the_year" value="2017">selected</eq> >2017</option>
+                              <option value="2018" <eq name="the_year" value="2018">selected</eq> >2018</option>
+                              <option value="2019" <eq name="the_year" value="2019">selected</eq> >2019</option>
+                              <option value="2020" <eq name="the_year" value="2020">selected</eq> >2020</option>
+                            </select>
+                            <span></span>
+                        </li>
+                        <li class="pull-left " style="margin-right:10px;">
+                            <select  style="width:auto" name="the_month" id="the_month">
+                              <option value="">月份</option>
+                              <option value="01" <eq name="the_month" value="01">selected</eq> >1月份</option>
+                              <option value="02" <eq name="the_month" value="02">selected</eq> >2月份</option>
+                              <option value="03" <eq name="the_month" value="03">selected</eq> >3月份</option>
+                              <option value="04" <eq name="the_month" value="04">selected</eq> >4月份</option>
+                              <option value="05" <eq name="the_month" value="05">selected</eq> >5月份</option>
+                              <option value="06" <eq name="the_month" value="06">selected</eq> >6月份</option>
+                              <option value="07" <eq name="the_month" value="07">selected</eq> >7月份</option>
+                              <option value="08" <eq name="the_month" value="08">selected</eq> >8月份</option>                                  
+                              <option value="09" <eq name="the_month" value="09">selected</eq> >9月份</option>
+                              <option value="10" <eq name="the_month" value="10">selected</eq> >10月份</option>
+                              <option value="11" <eq name="the_month" value="11">selected</eq> >11月份</option>
+                              <option value="12" <eq name="the_month" value="12">selected</eq> >12月份</option>
+                            </select>
+                        </li>
+						<li class="pull-left " style="margin-right:10px;">
+                        	<input type="checkbox" name="autoCreate" value="1" >创建默认设置
+                        </li>
+
+                        <li class="pull-left">
+                        	<button type="button" class="btn" name="btn_search" id="btn_search"> <img src="__PUBLIC__/img/search.png"/>  提交</button>
+                        </li>
+                         <li class="pull-left hide" style="padding-right:10px;">
+                        	
+                        </li>                       
+                    
+					</ul>
+					</form>
+				</li>
+			</ul>
+			<div class="pull-right">
+				<div class="btn-group hide">
+					<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="icon-wrench"></i>  &nbsp;{:L('SCHEDULING_TOOLS')}<span class="caret"></span></button>
+					<ul class="dropdown-menu">
+						<!--<li><a href="javascript:return(0);" id="import_excel"  class="link">导入日程</a></li>-->
+						<li><a href="{:U('Kaoqin/excelexport')}"  onclick="return window.confirm(&quot;{:L('ARE_YOU_SURE_YOU_WANT_TO_EXPORT_THE_SCHEDULE')} &quot;);" class="link"><i class="icon-download"></i>&nbsp;{:L('EXPORT_THE_SCHEDULE')}</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+    
+    <div class="row">
+    	<div class="span12">
+        	<p><h4><font color="red">导入考勤记录过程中，会依据此处设置进行计算，并将计算结果存储起来，所以，确保 此处的设置完全正确后再进行导入考勤记录！</font></h4></p>
+
+        </div>
+    </div>
+    
+	<div class="row">
+		<div class="span12">
+			<form id="form1" method="post">
+				<table class="table table-hover table-striped table_thead_fixed"> 
+					<if condition="$datas eq null">
+						<tr><td><h5><font color="red">{:L('EMPTY_TPL_DATA')}，<br>如需创建默认考勤时间设置，请对复选框打勾后提交，<br>将自动创建指定月份的各日原始设置，<br>随后可修改这些设置</font></h5></td></tr>
+					<else/>
+					<thead> 
+						<tr>
+							<th class="hide"><input type="checkbox" name="check_all" id="check_all"/></th>
+                            <th width='60'>ID</th>
+                            <th width='110'>日期</th>
+							<th width='60'>星期</th>
+							<th width='100'>状态</th> 
+							<th width='120'>上班时间</th>
+                            <th width='120'>下班时间</th>
+                            <th >备注</th>
+                            <th width='120'>操作</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<volist name="datas" id="vo">
+                            <tr>
+                            <td class="hide">
+                            <input name="id[]" class="check_list" type="checkbox" value="{$vo.id}"/>
+                            </td>
+                            <td>{$vo.id}</td>
+                            <td>{$vo.date}</td>
+                            <td>{$vo.week}</td>
+                            <td >{$vo.state}-<?php echo $state_arr[$vo['state']];?></td>
+                            <td>{$vo.start}</td>
+                            <td>{$vo.end}</td>
+                            <td >{$vo.content}</td>
+                            <td> 
+                                <?php 
+                                if (1 == session('user_id') || 2 == session('position_id')){	//session('role_id')
+                                ?>
+                            <a href="{:U('Kaoqinconfig/config_year_month_day_time_edit', 'id='.$vo['id'])}">编缉</a>
+                            	<?php
+                                }
+                                ?>
+                            </td>
+                            </tr>
+						</volist>
+					</tbody>
+					</if>
+
+					<tfoot>
+					<tr><td colspan="17">{$page}</td></tr>
+					</tfoot>
+                    <tr>
+                    <td colspan="17">
+                    <h5>要生成某月的设置记录，对复选框打勾后点按钮进行，记录不会被重复生成。<br>
+                    修改记录，先前的导入考勤记录的过程中的计算结果不会被更新<br>
+                    状态共有以下几种情况：0、不上班（如星期天和无薪假期）,1、必须打卡（包括半天班和全天班）,2、特殊情况免打卡（如全天不上班的带薪假期）<br>
+                    </h5>
+                    </td>
+                    </tr>
+				</table>
+			</form>
+		</div>
+	</div>    
+    
+</div>
+
+<include file="Public:footer" />
+
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/WdatePicker.js"></script>
+
+
+<script language="javascript">
+$(document).ready(function() {
+	
+	//点击登陆，post提交
+	$('#btn_search').click(function(){
+
+		$("#searchForm").submit();
+	});
+	
+});
+</script>

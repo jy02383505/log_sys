@@ -1,0 +1,340 @@
+<include file="Public:header" />
+
+<style>
+	.error{border:#FF0000 solid 2px;}
+</style>
+
+<div class="container">
+	<!-- Docs nav ================================================== -->
+	<div class="page-header">
+		<h4>[{$tj.name}] 加班统计</h4>
+        <div style="height:30px;line-height:30px;">选择年份月份及员工后，点统计按钮，可以查看该员工指定年月的考勤统计</div>
+	</div>
+	<include file="Public:alert" />
+	<p class="view">
+    <!--
+    <b>{:L('VIEW_NAV')}</b>
+	<img src=" __PUBLIC__/img/by_owner.png"/>  <a href="{:U('event/index')}" <if condition="$Think.get.by eq null">class="active"</if>>{:L('ALL')}</a> |
+	<a href="{:U('event/index','by=me')}" <if condition="$Think.get.by eq 'me'">class="active"</if>>{:L('MY_RESPONSIBLE')}</a> |
+	<a href="{:U('event/index','by=sub')}" <if condition="$Think.get.by eq 'sub'">class="active"</if>>{:L('SUBORDINATE_RESPONSIBLE')}</a> | 
+	<a href="{:U('event/index','by=create')}" <if condition="$Think.get.by eq 'create'">class="active"</if>>{:L('MY_CREATE')}</a> &nbsp; &nbsp; &nbsp; &nbsp;
+	<img src="__PUBLIC__/img/by_time.png"/> 
+	<a href="{:U('event/index','by=today')}" <if condition="$Think.get.by eq 'today'">class="active"</if>>{:L('TODAY_SCHEDULE')}</a> | 
+	<a href="{:U('event/index','by=week')}" <if condition="$Think.get.by eq 'week'">class="active"</if>>{:L('WEEK_SCHEDULE')}</a> | 
+	<a href="{:U('event/index','by=month')}" <if condition="$Think.get.by eq 'month'">class="active"</if>>{:L('MONTH_SCHEDULE')}</a> &nbsp; &nbsp; 
+	<a href="{:U('event/index','by=add')}" <if condition="$Think.get.by eq 'add'">class="active"</if>>{:L('RECENTLY_CREATED')}</a> | 
+	<a href="{:U('event/index','by=update')}" <if condition="$Think.get.by eq 'update'">class="active"</if>>{:L('RECENT_UPDATES')}</a>
+    -->
+	</p>
+	<div class="row">
+		<div class="span12">
+			<ul class="nav pull-left">
+				<li class="pull-left"></li>
+				<li class="pull-left">
+					<form class="form-inline" id="tjForm"  action="" method="get">
+                    <input type="hidden" name="m" value="Jiaban"/><!--模型：考勤-->
+                    <input type="hidden" name="a" value="tj"/><!--模型：考勤-->
+					<ul class="nav pull-left">
+                        <li class="pull-left" style="margin-right:10px;">
+                        	
+                            <select  style="width:auto" name="the_year">
+                              <option value="">年份</option>
+                              <option value="2016" <eq name="the_year" value="2016">selected</eq> >2016</option>
+                              <option value="2017" <eq name="the_year" value="2017">selected</eq> >2017</option>
+                              <option value="2018" <eq name="the_year" value="2018">selected</eq> >2018</option>
+                              <option value="2019" <eq name="the_year" value="2019">selected</eq> >2019</option>
+                              <option value="2020" <eq name="the_year" value="2020">selected</eq> >2020</option>
+                            </select>
+                            <span></span>
+                        </li>
+                        <li class="pull-left" style="margin-right:10px;">
+                            <select  style="width:auto" name="the_month">
+                              <option value="">月份</option>
+                              <option value="1" <eq name="the_month" value="1">selected</eq> >1月份</option>
+                              <option value="2" <eq name="the_month" value="2">selected</eq> >2月份</option>
+                              <option value="3" <eq name="the_month" value="3">selected</eq> >3月份</option>
+                              <option value="4" <eq name="the_month" value="4">selected</eq> >4月份</option>
+                              <option value="5" <eq name="the_month" value="5">selected</eq> >5月份</option>
+                              <option value="6" <eq name="the_month" value="6">selected</eq> >6月份</option>
+                              <option value="7" <eq name="the_month" value="7">selected</eq> >7月份</option>
+                              <option value="8" <eq name="the_month" value="8">selected</eq> >8月份</option>                                  
+                              <option value="9" <eq name="the_month" value="9">selected</eq> >9月份</option>
+                              <option value="10" <eq name="the_month" value="10">selected</eq> >10月份</option>
+                              <option value="11" <eq name="the_month" value="11">selected</eq> >11月份</option>
+                              <option value="12" <eq name="the_month" value="12">selected</eq> >12月份</option>
+                            </select>
+                        </li>
+                        <li class="pull-left" style="margin-right:10px;">
+                            <select  style="width:auto" name="user_id">
+                            <option value="">职员</option>
+                            <volist name="users_list" id="vo">
+                            <option value="{$vo.user_id}" <eq name="user_id" value="$vo.user_id">selected</eq>  >{$vo.name}</option>
+                            </volist>
+                            </select>
+                        </li>
+                        
+                        <li class="pull-left">
+                        	<button type="submit" class="btn"> <img src="__PUBLIC__/img/search.png"/>统计</button>
+                        </li>
+                        
+                        <li class="pull-left">
+                        	<a href="{:U('Jiaban/index')}"><button type="button" class="btn btn-link">返回加班列表</button></a>
+                        </li>
+                        
+                        <li class="pull-left">
+                        	
+                        </li>
+					</ul>
+					</form>
+				</li>
+			</ul>
+			<div class="pull-right hide">
+            	<a id="add_kaoqin_row" href="{:U('Kaoqin/add')}" class="btn btn-primary" style="margin-right:20px;"><i class="icon-plus"></i> &nbsp;增加考勤记录</a>
+				<a id="import_kaoqin_txt" href="javascript:void(0);" class="btn btn-primary"><i class="icon-plus"></i> &nbsp;导入考期机DAT文件</a>&nbsp;
+				<div class="btn-group hide">
+					<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="icon-wrench"></i>  &nbsp;{:L('SCHEDULING_TOOLS')}<span class="caret"></span></button>
+					<ul class="dropdown-menu">
+						<!--<li><a href="javascript:return(0);" id="import_excel"  class="link">导入日程</a></li>-->
+						<li><a href="{:U('Kaoqin/excelexport')}"  onclick="return window.confirm(&quot;{:L('ARE_YOU_SURE_YOU_WANT_TO_EXPORT_THE_SCHEDULE')} &quot;);" class="link"><i class="icon-download"></i>&nbsp;{:L('EXPORT_THE_SCHEDULE')}</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="span12">
+			<form id="form1" method="post">
+				<table class="table table-hover table-striped table_thead_fixed"> 
+                <!--
+
+                -->
+                    <tr>
+                    <td colspan="10" style="font-weight:bold;height:60px;line-height:60px;font-size:18px;">
+                    [{$tj.name}] 本月份统计：
+                    </td>
+                    </tr>
+                    
+                    <tr>
+                    <td colspan="10" style="padding:0px;">
+                    	<table class="table" style="margin:0px;">
+                        <tr>
+                        <td width="100">姓名：</td>
+                        <td >{$tj.name}</td>
+                        </tr> 
+                        <tr>
+                        <td >本月加班时长：</td>
+                        <td >{$tj.qj_this_month_hour_count} 小时</td>
+                        </tr> 
+                        </table>
+                    </td>
+                    </tr> 
+                    <tr>
+                    <td colspan="10">
+                    
+                    </td>
+                    </tr> 
+                    
+                    
+                    
+                        
+                    
+                    <tr>
+                    <td colspan="10" style="font-weight:bold;height:60px;line-height:60px;font-size:18px;" >
+                    [{$tj.name}] 本年度加班总时长：
+                    </td>
+                    </tr> 
+                    
+                    <tr>
+                    <td colspan="10" style="padding:0px;">
+                    	<table class="table" style="margin:0px;">
+                        <tr>
+                        <td width="100">本年度加班时长：</td>
+                        <td >{$tj.qj_the_year_hour_count} 小时</td>
+                        </tr> 
+                        <tr>
+                        <td width="100">本年度年假剩余：</td>
+                        <td >{$tj.nianjia_shenyu_hour} 小时 （年假5天*8=40小时）</td>
+                        </tr> 
+                        </table>
+                    </td>
+                    </tr> 
+                    
+                    <tr>
+                    <td colspan="10" style="font-weight:bold;height:60px;line-height:60px;font-size:18px;" >
+                    [{$tj.name}] 加班统计：（{$the_year}年）
+                    </td>
+                    </tr>
+ <style>                  
+ 	.tb_left{}
+ 	.tb_left li{list-style-type:none;height:30px;line-height:30px;}
+	
+ 	.tb_td{float:left;width:60px;height:90px;margin:0px;padding:0px;}
+	.tb_td li{float:left;list-style-type:none;overflow:hidden;}
+ 	.tb_td dt{clear:both;height:30px;line-height:30px;border-bottom:#CCC 1px solid;}	
+ </style>
+                    
+                    <tr>
+                    <td colspan="10" style="padding:0px;">
+                    	<table class="table" style="margin:0px;min-width:1000px;">
+
+                        <tr>
+                        <td width="140">
+                            <ul class="tb_left">
+                            <li><b>月份</b></li>
+                            <li>正常加班（小时）</li>
+                            <li>主动加班（小时）</li>
+                            </ul>
+                        </td>
+                        <td >
+                        	<div style="clear:both;width:100%;">
+                            <volist name="tj_every_month" id="vo">
+                                <ul class="tb_td">
+                                <dt>{$vo.month_int}月</dt>
+                                <dt>{$vo.this_month_qj_hour_count}</dt>
+                                <dt>00</dt>
+                                </ul>
+                            </volist>
+                            </div>
+                        </td>
+                        </tr> 
+                        </table>
+                    </td>
+                    </tr> 
+                    
+                                                        
+                    
+
+				</table>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="hide" id="dialog-import" title="{:L('IMPORT_DATA')}">loading...</div>
+<div class="hide" id="dialog-role-info" title="{:L('DIALOG_USER_INFO')}">loading...</div>
+
+<div class="hide" id="dialog-import-kaoqin" title="导入考勤机TXT">loading...</div>
+
+<script type="text/javascript">
+<if condition="C('ismobile') eq 1">width=$('.container').width() * 0.9;<else/>width=800;</if>
+$("#dialog-import").dialog({
+	autoOpen: false,
+	modal: true,
+	width: width,
+	maxHeight: 400,
+	position: ["center",100]
+});
+$("#dialog-role-info").dialog({
+    autoOpen: false,
+    modal: true,
+	width: width,
+	maxHeight: 400,
+	position: ["center",100]
+});
+
+//考勤机
+$("#dialog-import-kaoqin").dialog({
+	autoOpen: false,
+	modal: true,
+	width: width,
+	maxHeight: 400,
+	position: ["center",100]
+});
+
+function changeContent(){
+	a = $("#select1  option:selected").val();
+	window.location.href="{:U('event/index', 'by=')}"+a;
+}
+$(function(){
+<if condition="$Think.get.field neq null">
+	$("#field option[value='{$Think.get.field}']").prop("selected", true);changeCondition();
+	$("#condition option[value='{$Think.get.condition}']").prop("selected", true);changeSearch();
+	$("#search").prop('value', '{$Think.get.search}');
+</if>
+	$("#check_all").click(function(){
+		$("input[class='check_list']").prop('checked', $(this).prop("checked"));
+	});
+	$('#delete').click(function(){
+		if(confirm('确定删除考勤记录吗')){
+			$("#form1").attr('action', '{:U("Kaoqin/del")}');
+			$("#form1").submit();
+		}
+	});
+	$("#import_excel").click(function(){
+		$('#dialog-import').dialog('open');
+		$('#dialog-import').load('{:U("event/excelimport")}');
+	});
+	$(".role_info").click(function(){
+		$role_id = $(this).attr('rel');
+		$('#dialog-role-info').dialog('open');
+		$('#dialog-role-info').load('{:U("user/dialoginfo","id=")}'+$role_id);
+	});
+	
+	//考勤机TXT导入对话框
+	$("#import_kaoqin_txt").click(function(){
+		$('#dialog-import-kaoqin').dialog('open');
+		$('#dialog-import-kaoqin').load('{:U("Kaoqin/txtimport")}');
+	});
+	
+})
+</script>
+<include file="Public:footer" />
+
+
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/WdatePicker.js"></script>
+
+
+<script type="text/javascript">
+$(function($) {
+	
+	// 判断英文字符
+	jQuery.validator.addMethod("isEnglish", function(value, element) {       
+         return this.optional(element) || /^[A-Za-z]+$/.test(value);       
+    }, "只能包含英文字符。");
+	
+	
+	$('#tjForm').validate({
+		errorElement : 'span',
+		errorClass : 'error',
+		focusInvalid : true,  
+        rules : {  
+			the_year:{
+				required: true,//名称带方括号验证不
+			},
+			the_month:{
+				required: true,//
+			},
+			kqj_user_id:{
+				required: true,//
+			},
+        },  
+        messages : {
+			the_year :{
+				required :"年份必选",	
+			},
+			the_month :{
+				required :"月份必选",	
+			},
+			kqj_user_id :{
+				required :"员工必选",	
+			},
+        },  
+		
+
+        highlight : function(element) {  
+            $(element).closest('.form-group').addClass('has-error');  
+        },  
+
+        success : function(label) {  
+            label.closest('.form-group').removeClass('has-error');  
+            label.remove();  
+        },  
+
+        errorPlacement : function(error, element) {  
+            element.parent('div').append(error);  
+        },  
+		submitHandler: function(form) {
+			form.submit();
+		}
+	});
+});
+</script>

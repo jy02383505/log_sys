@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'position_id', 1 => 'parent_id', 2 => 'name', 3 => 'department_id', 4 => 'description', '_autoinc' => true, '_pk' => 'position_id', '_type' => array ( 'position_id' => 'int(10)', 'parent_id' => 'int(10)', 'name' => 'varchar(20)', 'department_id' => 'int(10)', 'description' => 'varchar(200)', ), );?>

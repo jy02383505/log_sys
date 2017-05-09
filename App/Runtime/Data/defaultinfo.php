@@ -1,0 +1,1 @@
+<?php	return array ( 'name' => '久联日常工作管理', 'description' => '', 'state' => '', 'city' => '', 'allow_file_type' => '', 'contract_alert_time' => 30, 'task_model' => '1', 'logo' => NULL, );?>

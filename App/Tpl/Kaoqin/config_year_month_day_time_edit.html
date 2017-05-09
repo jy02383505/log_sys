@@ -1,0 +1,176 @@
+<include file="Public:header" />
+
+<style>
+	.error{border:#FF0000 solid 1px;}
+</style>
+
+
+<div class="container">
+	<!-- Docs nav ================================================== -->
+	<div class="page-header">
+		<h4>每日考勤设置</h4>
+	</div>
+	<include file="Public:alert" />
+	<p class="view">
+
+	</p>
+	<div class="row">
+		<div class="span12" style="padding-bottom:10px;border-bottom:#CCC 1px solid;">
+			<p>请注意严格按要求填写和选择。</p>
+			<p ></p>
+		</div>
+		<div class="span12">
+			<form id="form1" name="form1" method="post" action="">
+            	<input type="hidden" name="id" value="{$datas.id}">
+                <table class=" table-condensed" width="100%">
+                <tr>                    
+                <td width="100">日期</td>
+                <td width="200">{$datas.date}</td>
+                <td></td>
+                </tr>
+                
+                <tr>                    
+                <td>星期</td>
+                <td>{$datas.week}</td>
+                <td></td>
+                </tr>
+                
+                <tr>                    
+                <td>状态</td>
+                <td>
+                    <select  style="width:auto" name="state" id="state">
+                        <option value="">请选择</option>
+                        <option value="0" <eq name="datas.state" value="0">selected</eq> >0-不上班</option>
+                        <option value="1" <eq name="datas.state" value="1">selected</eq> >1-上班，必须打卡</option>
+                        <option value="2" <eq name="datas.state" value="2">selected</eq> >2-特殊情况，免打卡</option>
+                    </select>                
+                </td>
+                <td> </td>
+                </tr>
+                
+                <tr>                    
+                <td>签到时间</td>
+                <td>
+                    <input type="text" name="start"  id="start" onfocus="WdatePicker({skin:'whyGreen',dateFmt:'HH:mm:ss'})" class="Wdate" value="{$datas.start}" style="width:120px;"/>
+                </td>
+                <td> </td>
+                </tr>   
+                
+                <tr>                    
+                <td>签退时间</td>
+                <td>
+                    <input type="text" name="end" id="end" onfocus="WdatePicker({skin:'whyGreen',dateFmt:'HH:mm:ss'})" class="Wdate" value="{$datas.end}" style="width:120px;"/>
+                </td>
+                <td> </td>
+                </tr> 
+                
+                <tr>                    
+                <td>备注</td>
+                <td colspan="2">
+                    <textarea class="form-control" rows="3" style="width:400px;" name="content">{$datas.content}</textarea>
+                </td>
+                </tr>                 
+                            
+                
+                
+                <tr>                    
+                <td></td>
+                <td>
+                	
+                	<button type="submit" class="btn btn-info btn-sm btn_time_save" id_val="{$vo.id}">保存更改</button>
+                	<button type="reset" class="btn btn-info btn-sm">取消</button>
+                </td>
+                <td></td>
+                </tr>                
+                </table>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/WdatePicker.js"></script>
+
+<script type="text/javascript">
+$(function($) {
+	var tmpClassid = '';
+	
+	
+	$('button[type="reset"]').click(function(){
+		window.location.href = '<?php echo U("kaoqinconfig/config_year_month_day_time","the_year=".$datas["year"]."&the_month=".$datas["month"]);?>';
+	});
+});
+</script>
+
+
+<script type="text/javascript">
+$(function($) {
+	
+	// 判断英文字符
+	jQuery.validator.addMethod("isEnglish", function(value, element) {       
+         return this.optional(element) || /^[A-Za-z]+$/.test(value);       
+    }, "只能包含英文字符。");
+	
+	
+	$('#form1').validate({
+		errorElement : 'span',
+		errorClass : 'error',
+		focusInvalid : true,  
+        rules : {  
+			kqj_user_id:{
+				required: true,//名称带方括号验证不
+				number:true,
+			},
+			kqj_date_varchar:{
+				required: true,//
+			},
+        },  
+        messages : {
+			kqj_user_id :{
+				required :"用户必须选择",	
+			},
+			kqj_date_varchar :{
+				required :"时间必填",	
+			},
+        },  
+		
+
+        highlight : function(element) {  
+            $(element).closest('.form-group').addClass('has-error');  
+        },  
+
+        success : function(label) {  
+            label.closest('.form-group').removeClass('has-error');  
+            label.remove();  
+        },  
+
+        errorPlacement : function(error, element) {  
+            element.parent('div').append(error);  
+        },  
+		submitHandler: function(form) {
+			form.submit();
+		}
+	});
+});
+</script>
+
+<include file="Public:footer" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.0.min.js"></script>
+<script>
+$(document).ready(function() {
+	//mac应用按钮 zjh add
+
+
+});
+
+</script>
+
+
+
+
+
+
+
+
+

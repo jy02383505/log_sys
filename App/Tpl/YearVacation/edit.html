@@ -1,0 +1,45 @@
+<include file="Public:header" />
+
+<div class="container">
+	<div class="page-header">
+		<h4><if condition="ACTION_NAME eq 'add'">添加<else/>修改</if>年假记录</h4>
+	</div>
+
+	<form method="post" action=<if condition="ACTION_NAME eq 'add'">"{:U('YearVacation/add')}"<else/>"{:U('YearVacation/edit')}"</if>>
+		<table class="table table-hover table-striped "> 
+            <tr>
+                <td width="120px">用户：</td>
+                <td>
+                    <if condition="ACTION_NAME eq 'add'">
+                        <select name="user_id">
+                            <option>---请选择---</option>
+                            <volist name="users" id="user">
+                            	<option value="{$user[user_id]}">{$user[user_id]}-{$user[name]}</option>
+                            </volist>
+                        </select>
+                    <else/>
+                        <input type="text" value="{$row[username]}" disabled>
+                        <input type="hidden" name="user_id" value="{$row[user_id]}">
+                    </if>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>年假剩余天数：</td>
+                <td>
+    				<input type="text" name="year_vacation" value="{$row[year_vacation]}">
+    			</td>
+            </tr>
+            
+            <tr>
+                <td> 
+                    <input type="hidden" name="id" value='{$row[id]}'>  
+                    <button type="submit" class="btn btn-primary btn-sm">保存</button>
+                    <a href="{:U('YearVacation/index')}"><button type="button" class="btn btn-danger btn-sm">取消</button></a> 
+                </td>
+            </tr>  
+		</table>
+	</form>
+</div>
+
+<include file="Public:footer" />

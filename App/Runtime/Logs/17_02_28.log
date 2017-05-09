@@ -1,0 +1,30 @@
+[ 2017-02-28T10:08:03+08:00 ] 127.0.0.1 /index.php?m=performance&a=ajax_getWorkLateLeaveEarly
+ERR: Table 'log_sys.jl_qinjia' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `jl_qinjia`
+ERR: Table 'log_sys.jl_qinjia' doesn't exist
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `jl_qinjia` WHERE ( the_month = '2017-01' and user_id = 20 and type=1 ) LIMIT 1  
+
+[ 2017-02-28T10:08:11+08:00 ] 127.0.0.1 /index.php?m=performance&a=ajax_getWorkLateLeaveEarly
+ERR: Table 'log_sys.jl_qinjia' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `jl_qinjia`
+ERR: Table 'log_sys.jl_qinjia' doesn't exist
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `jl_qinjia` WHERE ( the_month = '2017-01' and user_id = 4 and type=1 ) LIMIT 1  
+
+[ 2017-02-28T10:08:18+08:00 ] 127.0.0.1 /index.php?m=performance&a=ajax_getWorkLateLeaveEarly
+ERR: Table 'log_sys.jl_qinjia' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `jl_qinjia`
+ERR: Table 'log_sys.jl_qinjia' doesn't exist
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `jl_qinjia` WHERE ( the_month = '2017-01' and user_id = 13 and type=1 ) LIMIT 1  
+
+[ 2017-02-28T10:08:22+08:00 ] 127.0.0.1 /index.php?m=performance&a=ajax_getWorkLateLeaveEarly
+ERR: Table 'log_sys.jl_qinjia' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `jl_qinjia`
+ERR: Table 'log_sys.jl_qinjia' doesn't exist
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `jl_qinjia` WHERE ( the_month = '2017-01' and user_id = 3 and type=1 ) LIMIT 1  
+
+[ 2017-02-28T10:09:20+08:00 ] 127.0.0.1 /index.php?m=performance&a=ajax_getWorkLateLeaveEarly
+ERR: Table 'log_sys.jl_qinjia' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `jl_qinjia`
+ERR: Table 'log_sys.jl_qinjia' doesn't exist
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `jl_qinjia` WHERE ( the_month = '2017-01' and user_id = 3 and type=1 ) LIMIT 1  
+

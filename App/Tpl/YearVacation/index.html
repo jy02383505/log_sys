@@ -1,0 +1,42 @@
+<include file="Public:header" />
+<div class="container">
+    <div class="page-header">
+        <h3>年假列表</h3>
+    </div>
+    <a href="{:U('YearVacation/add')}"><button type="button" class="btn btn-sm btn-success pull-right add_out">新增年假记录</button></a>
+    <table class="table table-hover table-striped table-bordered">
+        <tr>
+            <th>id</th>
+            <th>年假剩余天数</th>
+            <th>员工姓名</th>
+            <th>修改时间</th>
+            <th>操作</th>
+        </tr>
+        <volist name="rows" id="row">
+            <tr>
+                <td>{$row[id]}</td>
+                <td>{$row[year_vacation]}</td>
+                <td>{$row[username]}</td>
+                <td>{$row[update_time]|date="Y-m-d H:i:s", ###}</td>
+                <td>
+                    <a href={:U('YearVacation/edit', "id=$row[id]")} class="btn btn-sm btn-warning">修改</a>
+                    <button type="button" data-href={:U('YearVacation/delete', "id=$row[id]")} class="btn btn-sm btn-danger del_it">删除</button>
+                </td>
+            </tr>
+        </volist>
+    </table>
+    <div class="page-box">
+        {$show}
+    </div>
+</div>
+
+<script type="text/javascript">
+    // var module = '{$Think.ACTION_NAME}';
+    // alert(module);
+    $('.del_it').click(function(){
+        var self = $(this);
+        if(confirm('确定删除外出记录吗')){
+            location.href = self.attr('data-href');
+        }
+    })
+</script>

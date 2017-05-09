@@ -1,0 +1,305 @@
+<include file="Public:header" />
+<div class="container">
+	<!-- Docs nav ================================================== -->
+	<div class="page-header">
+		<h4>按年统计</h4>
+	</div>
+	
+	<p class="view">
+    <!--
+    <b>{:L('VIEW_NAV')}</b>
+	<img src=" __PUBLIC__/img/by_owner.png"/>  <a href="{:U('event/index')}" <if condition="$Think.get.by eq null">class="active"</if>>{:L('ALL')}</a> |
+	<a href="{:U('event/index','by=me')}" <if condition="$Think.get.by eq 'me'">class="active"</if>>{:L('MY_RESPONSIBLE')}</a> |
+	<a href="{:U('event/index','by=sub')}" <if condition="$Think.get.by eq 'sub'">class="active"</if>>{:L('SUBORDINATE_RESPONSIBLE')}</a> | 
+	<a href="{:U('event/index','by=create')}" <if condition="$Think.get.by eq 'create'">class="active"</if>>{:L('MY_CREATE')}</a> &nbsp; &nbsp; &nbsp; &nbsp;
+	<img src="__PUBLIC__/img/by_time.png"/> 
+	<a href="{:U('event/index','by=today')}" <if condition="$Think.get.by eq 'today'">class="active"</if>>{:L('TODAY_SCHEDULE')}</a> | 
+	<a href="{:U('event/index','by=week')}" <if condition="$Think.get.by eq 'week'">class="active"</if>>{:L('WEEK_SCHEDULE')}</a> | 
+	<a href="{:U('event/index','by=month')}" <if condition="$Think.get.by eq 'month'">class="active"</if>>{:L('MONTH_SCHEDULE')}</a> &nbsp; &nbsp; 
+	<a href="{:U('event/index','by=add')}" <if condition="$Think.get.by eq 'add'">class="active"</if>>{:L('RECENTLY_CREATED')}</a> | 
+	<a href="{:U('event/index','by=update')}" <if condition="$Think.get.by eq 'update'">class="active"</if>>{:L('RECENT_UPDATES')}</a>
+    -->
+	</p>
+ <style>                  
+ 	.tb_left{}
+ 	.tb_left li{list-style-type:none;height:30px;line-height:30px;border-bottom:#CCC 1px solid;}
+	.tb_left li.noborder{clear:both;height:30px;line-height:30px;border:none;}
+	
+ 	.tb_month{float:left;width:60px;height:90px;margin:0px;padding:0px;}
+	.tb_month li{float:left;list-style-type:none;overflow:hidden;}
+ 	.tb_month dt{clear:both;height:30px;line-height:30px;border-bottom:#CCC 1px solid;}	
+	.tb_month dt.noborder{clear:both;height:30px;line-height:30px;border:none;}
+	
+ 	.tb_year{float:left;width:60px;margin:0px;padding:0px;}
+	.tb_year li{clear:both;list-style-type:none;height:30px;line-height:30px;border-bottom:#CCC 1px solid;overflow:hidden;}
+	.tb_year li.noborder{clear:both;height:30px;line-height:30px;border:none;}
+
+	.backToTop{display:none;}
+ </style>
+	<div class="row">
+		<div class="span12">
+			<ul class="nav pull-left">
+				<li class="pull-left hide"><a id="delete"  class="btn" style="margin-right: 5px;"><i class="icon-remove"></i>{:L('DELETE')}</a></li>
+				<li class="pull-left">
+					<form class="form-inline" id="searchForm"  action="" method="get">
+                    <input type="hidden" name="m" value="Count"/><!--模型：请假-->
+                    <input type="hidden" name="a" value="index"/><!--模型：列表-->
+					<ul class="nav pull-left">
+                        <li class="pull-left" style="margin-right:10px;">
+                            <select  style="width:auto" name="the_year" id="the_year">
+                              <option value="">年份</option>
+                              <option value="2014" <eq name="the_year" value="2014">selected</eq> >2014</option>
+                              <option value="2015" <eq name="the_year" value="2015">selected</eq> >2015</option>
+                              <option value="2016" <eq name="the_year" value="2016">selected</eq> >2016</option>
+                              <option value="2017" <eq name="the_year" value="2017">selected</eq> >2017</option>
+                              <option value="2018" <eq name="the_year" value="2018">selected</eq> >2018</option>
+                              <option value="2019" <eq name="the_year" value="2019">selected</eq> >2019</option>
+                              <option value="2020" <eq name="the_year" value="2020">selected</eq> >2020</option>
+                            </select>
+                            <span></span>
+                        </li>
+                        <li class="pull-left " style="margin-right:10px;display:none;">
+                            <select  style="width:auto" name="the_month" id="the_month">
+                              <option value="">月份</option>
+                              <option value="1" <eq name="the_month" value="1">selected</eq> >1月份</option>
+                              <option value="2" <eq name="the_month" value="2">selected</eq> >2月份</option>
+                              <option value="3" <eq name="the_month" value="3">selected</eq> >3月份</option>
+                              <option value="4" <eq name="the_month" value="4">selected</eq> >4月份</option>
+                              <option value="5" <eq name="the_month" value="5">selected</eq> >5月份</option>
+                              <option value="6" <eq name="the_month" value="6">selected</eq> >6月份</option>
+                              <option value="7" <eq name="the_month" value="7">selected</eq> >7月份</option>
+                              <option value="8" <eq name="the_month" value="8">selected</eq> >8月份</option>                                  
+                              <option value="9" <eq name="the_month" value="9">selected</eq> >9月份</option>
+                              <option value="10" <eq name="the_month" value="10">selected</eq> >10月份</option>
+                              <option value="11" <eq name="the_month" value="11">selected</eq> >11月份</option>
+                              <option value="12" <eq name="the_month" value="12">selected</eq> >12月份</option>
+                            </select>
+                        </li>
+                        <li class="pull-left " style="margin-right:10px;display:none;">
+                            <select  style="width:auto" name="user_id" id="user_id">
+                            <option value="">用户</option>
+                            <volist name="users_list" id="vo">
+                            <option value="{$vo.user_id}" <eq name="user_id" value="$vo.user_id">selected</eq>  >{$vo.name}</option>
+                            </volist>
+                            </select>
+                        </li>
+                        
+                        <li class="pull-left " style="margin-right:10px;">
+                            <select  style="width:auto" name="tj_type" id="tj_type">
+                            <option value="">类型</option>
+                            <volist name="type_list" id="vo">
+                            <option value="{$vo.val}" <eq name="tj_type" value="$vo.val">selected</eq>  >{$vo.name}</option>
+                            </volist>
+                            </select>
+                        </li>
+
+                        <li class="pull-left hide">
+                        	<button type="submit" class="btn"> <img src="__PUBLIC__/img/search.png"/>  {:L('SEARCH')}</button>
+                        </li>
+                         <li class="pull-left" style="padding-right:10px;">
+                        	<button type="button" class="btn" name="btn_tj" id="btn_tj"> <img src="__PUBLIC__/img/search.png"/>  统计</button>
+                        </li>                       
+                    
+					</ul>
+					</form>
+				</li>
+			</ul>
+			<div class="pull-right">
+				<div class="">
+                按年逐月单项统计，如列出各人某一项目的每月的请假统计，结果较简单。
+				</div>
+			</div>
+		</div>
+	</div>
+    
+    
+    
+	<div class="page-header">
+		<h4>按月统计</h4>
+	</div>    
+	<div class="row">
+		<div class="span12">
+			<ul class="nav pull-left">
+				<li class="pull-left "></li>
+				<li class="pull-left">
+					<form class="form-inline" id="form_2"  action="" method="get" target="_blank">
+                    <input type="hidden" name="m" value="count"/><!--模型：请假-->
+                    <input type="hidden" name="a" value="count_one_people_days"/><!--模型：列表-->
+					<ul class="nav pull-left">
+                        <li class="pull-left" style="margin-right:10px;">
+                            <select  style="width:auto" name="the_year" id="the_year_2">
+                              <option value="">年份</option>
+                              <option value="2014" <eq name="the_year" value="2014">selected</eq> >2014</option>
+                              <option value="2015" <eq name="the_year" value="2015">selected</eq> >2015</option>
+                              <option value="2016" <eq name="the_year" value="2016">selected</eq> >2016</option>
+                              <option value="2017" <eq name="the_year" value="2017">selected</eq> >2017</option>
+                              <option value="2018" <eq name="the_year" value="2018">selected</eq> >2018</option>
+                              <option value="2019" <eq name="the_year" value="2019">selected</eq> >2019</option>
+                              <option value="2020" <eq name="the_year" value="2020">selected</eq> >2020</option>
+                            </select>
+                            <span></span>
+                        </li>
+                        <li class="pull-left " style="margin-right:10px;display:block;">
+                            <select  style="width:auto" name="the_month" id="the_month_2">
+                              <option value="">月份</option>
+                              <option value="01" <eq name="the_month" value="01">selected</eq> >1月份</option>
+                              <option value="02" <eq name="the_month" value="02">selected</eq> >2月份</option>
+                              <option value="03" <eq name="the_month" value="03">selected</eq> >3月份</option>
+                              <option value="04" <eq name="the_month" value="04">selected</eq> >4月份</option>
+                              <option value="05" <eq name="the_month" value="05">selected</eq> >5月份</option>
+                              <option value="06" <eq name="the_month" value="06">selected</eq> >6月份</option>
+                              <option value="07" <eq name="the_month" value="07">selected</eq> >7月份</option>
+                              <option value="08" <eq name="the_month" value="08">selected</eq> >8月份</option>                                  
+                              <option value="09" <eq name="the_month" value="09">selected</eq> >9月份</option>
+                              <option value="10" <eq name="the_month" value="10">selected</eq> >10月份</option>
+                              <option value="11" <eq name="the_month" value="11">selected</eq> >11月份</option>
+                              <option value="12" <eq name="the_month" value="12">selected</eq> >12月份</option>
+                            </select>
+                        </li>
+                        <li class="pull-left " style="margin-right:10px;display:block;">
+                            <select  style="width:auto" name="user_id" id="user_id_2">
+                            <option value="">用户</option>
+                            <volist name="users_list" id="vo">
+                            <option value="{$vo.user_id}" <eq name="user_id" value="$vo.user_id">selected</eq>  >{$vo.name}</option>
+                            </volist>
+                            </select>
+                        </li>
+
+                         <li class="pull-left" style="padding-right:10px;">
+                        	<button type="button" class="btn" name="btn_tj" id="btn_tj_2"> <img src="__PUBLIC__/img/search.png"/>  统计</button>
+                        </li>                       
+                    
+					</ul>
+					</form>
+				</li>
+			</ul>
+			<div class="pull-right">
+				<p>
+					可指定具体月份及统计对象，上部分为指定月份的每日情况，下部为各项的月汇总
+				</p>
+			</div>
+		</div>
+	</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+	<div class="row">
+		<div class="span12" style="padding-bottom:10px;border-bottom:#CCC 1px solid;">
+			<h4>说明</h4>
+			<p ></p>
+		</div> 
+	</div>    
+    
+</div>
+
+<include file="Public:footer" />
+
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/WdatePicker.js"></script>
+
+
+<script language="javascript">
+$(document).ready(function() {
+	
+	//点击登陆，post提交
+	$('#btn_tj').click(function(){
+		var tj_type = $("#tj_type").val();
+		var url_tj = '';
+		
+		//url
+		switch(tj_type)
+		{
+		case 'log'://日志统计
+			url_tj = "{:U('Count/index')}";
+			break;
+		case 'kaoqin'://考勤统计
+			url_tj = "{:U('Count/index')}";
+			break;
+		case 'chuchai'://出差统计
+			url_tj = "{:U('Count/index')}";
+			break;
+		default:
+			url_tj = "{:U('Count/index')}";
+
+		}
+		
+		
+		
+		//select value
+		var the_year = $("#the_year").val();
+		var the_month = $("#the_month").val();
+		var user_id = $("#user_id").val();
+		if (the_year == ''){
+			alert("年份必选");
+			$("#the_year").focus();
+			return;	
+		}
+		if (the_month==''){
+			alert("月份必选");
+			$("#the_month").focus();
+			return;
+		}
+//		if (user_id == ''){
+//			alert("用户必选");
+//			$("#user_id").focus();
+//			return;
+//		}
+		url_tj = url_tj+"&the_year="+the_year+"&the_month="+the_month+"&user_id="+user_id+"&tj_type="+tj_type;
+	//	alert(url_tj);
+		window.location.href = url_tj;
+	});
+	
+});
+</script>
+
+
+
+
+
+<script language="javascript">
+$(document).ready(function() {
+	
+	//点击登陆，post提交
+	$('#btn_tj_2').click(function(){
+		url_tj_2 = "{:U('Count/count_one_people_days')}";
+		
+		
+		//select value
+		var the_year = $("#the_year_2").val();
+		var the_month = $("#the_month_2").val();
+		var user_id = $("#user_id_2").val();
+		if (the_year == ''){
+			alert("年份必选");
+			$("#the_year_2").focus();
+			return;	
+		}
+		if (the_month==''){
+			alert("月份必选");
+			$("#the_month_2").focus();
+			return;
+		}
+		if (user_id == ''){
+			alert("用户必选");
+			$("#user_id_2").focus();
+			return;
+		}
+		url_tj_2 = url_tj_2+"&the_year="+the_year+"&the_month="+the_month+"&userid="+user_id;
+	//	alert(url_tj);
+		window.location.href = url_tj_2;
+	});
+
+	//激活新增的登陆按钮的click事件，此方法已被放弃，改用on方法
+	$("#btn_tj").live("click",function(){
+
+	});
+});
+</script>
+
+

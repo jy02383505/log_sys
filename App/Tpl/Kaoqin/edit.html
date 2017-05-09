@@ -1,0 +1,166 @@
+<include file="Public:header" />
+
+<style>
+	.error{border:#FF0000 solid 1px;}
+</style>
+
+
+<div class="container">
+	<!-- Docs nav ================================================== -->
+	<div class="page-header">
+		<h4>添加考勤记录</h4>
+	</div>
+	<include file="Public:alert" />
+	<p class="view">
+    <!--
+    <b>{:L('VIEW_NAV')}</b>
+	<img src=" __PUBLIC__/img/by_owner.png"/>  <a href="{:U('event/index')}" <if condition="$Think.get.by eq null">class="active"</if>>{:L('ALL')}</a> |
+	<a href="{:U('event/index','by=me')}" <if condition="$Think.get.by eq 'me'">class="active"</if>>{:L('MY_RESPONSIBLE')}</a> |
+	<a href="{:U('event/index','by=sub')}" <if condition="$Think.get.by eq 'sub'">class="active"</if>>{:L('SUBORDINATE_RESPONSIBLE')}</a> | 
+	<a href="{:U('event/index','by=create')}" <if condition="$Think.get.by eq 'create'">class="active"</if>>{:L('MY_CREATE')}</a> &nbsp; &nbsp; &nbsp; &nbsp;
+	<img src="__PUBLIC__/img/by_time.png"/> 
+	<a href="{:U('event/index','by=today')}" <if condition="$Think.get.by eq 'today'">class="active"</if>>{:L('TODAY_SCHEDULE')}</a> | 
+	<a href="{:U('event/index','by=week')}" <if condition="$Think.get.by eq 'week'">class="active"</if>>{:L('WEEK_SCHEDULE')}</a> | 
+	<a href="{:U('event/index','by=month')}" <if condition="$Think.get.by eq 'month'">class="active"</if>>{:L('MONTH_SCHEDULE')}</a> &nbsp; &nbsp; 
+	<a href="{:U('event/index','by=add')}" <if condition="$Think.get.by eq 'add'">class="active"</if>>{:L('RECENTLY_CREATED')}</a> | 
+	<a href="{:U('event/index','by=update')}" <if condition="$Think.get.by eq 'update'">class="active"</if>>{:L('RECENT_UPDATES')}</a>
+    -->
+	</p>
+	<div class="row">
+		<div class="span12" style="padding-bottom:10px;border-bottom:#CCC 1px solid;">
+			请注意选择正确的考勤类型
+
+		</div>
+		<div class="span12">
+			<form id="form1" name="form1" method="post" action="">
+				<table class="table table-hover table-striped table_thead_fixed"> 
+                <tr>
+                <td>类型：</td>
+                <td> 
+                	<eq name="ACTION_NAME" value="edit">
+                        <input type="radio" name="type" value='0' <eq name="datas.type" value="0">checked</eq> >签到
+                        <input type="radio" name="type" value='1' <eq name="datas.type" value="1">checked</eq> >签退
+                    <else/>
+                        <input type="radio" name="type" value='0' checked >签到
+                        <input type="radio" name="type" value='1' >签退
+                    </eq>
+                </td>
+                <td>
+
+                </td>
+                </tr> 
+                
+                <tr>
+                <td width='80'>用户：</td>
+                <td>
+                    <select  style="width:auto" name="user_id" id="user_id">
+                    <option value="">职员</option>
+                    <volist name="users_list" id="vo">
+                    <option value="{$vo.user_id}" <eq name="datas.user_id" value="$vo.user_id">selected</eq>  >{$vo.user_id}-{$vo.name}</option>
+                    </volist>
+                    </select>
+                    <span></span>
+                </td>
+                <td></td>
+                </tr>
+                
+                <tr>
+                <td>刷卡时间：</td>
+                <td>
+				<input type="text" id="the_time" name="the_time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="Wdate" value="{$datas.kqj_date_varchar}" style="width:140px"/>&nbsp;
+                </td>
+                <td>
+                </td>
+                </tr>
+                
+                 <tr>
+                <td>备注：</td>
+                <td><textarea name="content" class="form-control" rows="3" style="width:400px;">{$datas.content}</textarea>
+
+                </td>
+                <td>
+                </td>
+                </tr>               
+   
+                
+                <tr>
+                <td></td>
+                <td> 
+                    <input type="hidden" name="id" value='{$datas.id}'>  
+                    <button type="submit" class="btn btn-info btn-sm">保存更改</button>   &nbsp;&nbsp;
+                    <a href="{:U('Kaoqin/index')}"><button type="button" class="btn btn-info btn-sm">取消</button></a> 
+                </td>
+                <td>
+
+                </td>
+                </tr>  
+				</table>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/WdatePicker.js"></script>
+
+
+<script type="text/javascript">
+$(function($) {
+	
+	// 判断英文字符
+	jQuery.validator.addMethod("isEnglish", function(value, element) {       
+         return this.optional(element) || /^[A-Za-z]+$/.test(value);       
+    }, "只能包含英文字符。");
+	
+	
+	$('#form1').validate({
+		errorElement : 'span',
+		errorClass : 'error',
+		focusInvalid : true,  
+        rules : {  
+			user_id:{
+				required: true,//名称带方括号验证不
+				number:true,
+			},
+			the_time:{
+				required: true,//
+			},
+			content:{
+				required: true,//
+			},
+        },  
+        messages : {
+			user_id :{
+				required :"用户必须选择",	
+			},
+			the_time :{
+				required :"开始时间必填",	
+			},
+			content :{
+				required :"备注必填",	
+			},			
+        },  
+		
+
+        highlight : function(element) {  
+            $(element).closest('.form-group').addClass('has-error');  
+        },  
+
+        success : function(label) {  
+            label.closest('.form-group').removeClass('has-error');  
+            label.remove();  
+        },  
+
+        errorPlacement : function(error, element) {  
+            element.parent('div').append(error);  
+        },  
+		submitHandler: function(form) {
+			form.submit();
+		}
+	});
+});
+</script>
+
+
+<include file="Public:footer" />

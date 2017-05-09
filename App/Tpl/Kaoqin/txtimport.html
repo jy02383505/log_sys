@@ -1,0 +1,51 @@
+<include file="Public:header" />
+<div class="container">
+	<!-- Docs nav ================================================== -->
+	<div class="page-header">
+		<h4>导入考勤机记录</h4>
+        <div style="">
+        <p>请选择考勤机原始DAT文件，可以用记事本打开DAT文件，将旧的记录删除，但不得对任何记录作任何修改，空回车键在导入时自动跳过。</p>
+        <p>导入过程中，切记不要进行任何操作，导入完成后，会自动跳转到考勤记录列表页。</p>
+        <p><h4><font color="red">导入前，确保已经正确的设置了考勤时间（某日是否上班，上、下班时间等），否则产生的错误无法撤销！</font></h4>
+        <p><h4><font color="red">切忌：先导入考勤记录，后设置考勤时间，是严重错误的，因为很多数据是在导入过程中计算并存储！</font></h4>
+        <p><h4><font color="red">如果不确定或没有设置，请点下面的按钮查看、设置。</font></h4></p> <a href="{:U('Kaoqinconfig/config_year_month_day_time')}"><button type="button" class="btn btn-primary" title="设置每月考勤时间">每日考勤时间设置</button></a></p>
+        </div>
+	</div>
+	<include file="Public:alert" />
+	<p class="view">
+
+
+
+        <form action="{:U(Kaoqin/txtimport)}" method="post" enctype="multipart/form-data">
+            <table class="table table-hover">
+                <tr>
+                    <td class="tdleft">选择文件:</td> 
+                    <td>考勤机导出的原始DAT文件</td>
+                </tr>
+                <tr>
+                    <td class="tdleft" width="20%">{:L('ERROR_HANDLING')}</td> 
+                    <td>
+                        <input id="ownership" type="radio" checked="checked" value="0" name="error_handing">{:L('TERMINATION')}
+                        <input id="ownership1" type="radio" value="1" name="error_handing">{:L('SKIP')}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleft">{:L('Attachment')}</td>
+                    <td>
+                        <input type="file" name="txt"/>
+                    </td>
+                </tr>		
+                <tr> 
+                    <td>&nbsp;</td>
+                    <td>
+                    <input class="btn btn-primary" type="submit" name="submit" value="{:L('IMPORT')}"/> &nbsp; 
+                    <a href="{:U('Kaoqin/index')}">
+                    <button class="btn" onclick="javascript:$('#dialog-import').dialog('close');" type="button" value="{:L('CANCEL')}"/>返回考勤记录</button>
+                    </a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+	</p>
+</div>

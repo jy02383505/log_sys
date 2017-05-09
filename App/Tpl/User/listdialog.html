@@ -1,0 +1,95 @@
+<div class="clearfix">
+	<ul class="nav pull-left">
+		<li class="pull-left">
+			{:L('SELECT_DEPARTMENT')}&nbsp; <select style="width:auto" name="d_department" id="d_department" onchange="changedepartment()">
+				<option class="all" value="all">{:L('ALL')}</option>
+				<volist name="departmentList" id="vo">
+					<option value="{$vo.department_id}">{$vo.name}</option>
+				</volist>
+			</select>&nbsp;&nbsp;
+		</li>
+		<li class="pull-left">
+			&nbsp; {:L('USER_NAME')}：<input class="span2" id="d_name" type="text" name="d_name"/>
+		</li>
+		&nbsp; <button class="btn" onclick="d_changeContent()">{:L('SEARCH')}</button>
+	</ul>
+</div>
+<if condition="$role_list">
+<table class="table table-hover">
+	<thead>
+		<tr>
+		   <th>&nbsp;</th>
+		   <th>{:L('STAFF')}</th>
+		   <th>{:L('DEPARTMENT')}</th>
+		   <th>{:L('POSITION')}</th>
+<if condition="C('ismobile') neq 1">		   
+		   <th>{:L('SEX')}</th>
+		   <th>Email</th>
+		   <th>{:L('TELPHONE')}</th>	
+</if>		   
+		</tr>
+	</thead>	
+	<tbody id="d_content">
+		<if condition="role_list neq null">
+		<volist name="role_list" id="vo">
+		<tr>
+			<td><input name="owner" type="radio" value="{$vo.role_id}" /></td>
+			<td>{$vo.user_name}</td>
+			<td>{$vo.department_name}</td>
+			<td>{$vo.role_name}</td>
+<if condition="C('ismobile') neq 1">	
+			<td><if condition="$vo['sex'] eq 1">{:L('MALE')}<elseif condition="$vo['sex'] eq 2"/>{:L('FEMALE')}</if></td>
+			<td>{$vo.email}</td>
+			<td>{$vo.telephone}</td>
+</if>
+		</tr>
+		</volist>
+		<else />
+			<tr>
+				<td>{:L('EMPTY_DATA')}</td>
+			</tr>
+		</if>
+	</tbody>
+</table>
+<else />
+<div class="alert">
+	{:L('EMPTY_DATA')}
+</div>
+</if>
+<script type="text/javascript">
+	function changedepartment(){
+		$('#d_name').val();
+	}
+	function d_changeContent(){
+		department = $('#d_department').val();
+		name = $('#d_name').val();
+		$.ajax({
+			type:'get',
+			url:'index.php?m=user&a=changecontent&department='+department+'&name='+name,
+			async:false,
+			success:function(data){
+				temp = '';
+				if(data.data != null){
+					$.each(data.data, function(k, v){
+						temp += "<tr><td><input name='owner' type='radio' value='"+v.role_id+"' /></td><td>"+v.user_name+"</td><td>"+v.department_name+"</td><td>"+v.role_name+"</td>";
+						<if condition="C('ismobile') neq 1">
+							if(v.sex == 1){
+								temp += "<td>{:L('MALE')}</td>";
+							}else{
+								temp += "<td>{:L('FEMALE')}</td>";
+							}
+							temp += "<td>"+v.email+"</td>";
+							temp += "<td>"+v.telephone+"</td>";
+						</if>;
+						temp += "</tr>";
+					});
+					$('#d_content').html(temp);
+				}else{
+					$('#d_content').html('<tr><td colspan="4">{:L("NOT_FIND_THE_RESULTS_YOU_WANT")}</tr>');
+				}
+			},
+			dataType:'json'
+		});		
+	}
+
+</script>
